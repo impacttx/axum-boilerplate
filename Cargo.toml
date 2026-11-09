@@ -1,0 +1,71 @@
+[package]
+name = "axum-boilerplate"
+description = "High-performance Axum REST API backend with SeaORM and PostgreSQL"
+version = "0.1.0"
+license = "MIT"
+edition = "2024"
+publish = false
+rust-version = "1.99"
+
+[workspace]
+members = [".", "migration"]
+
+[dependencies]
+anyhow = "1.0.104"
+argon2 = "0.6.0"
+async-trait = "0.1.92"
+axum = { version = "0.8.9", features = ["multipart"] }
+chrono = { version = "0.4.45", features = ["serde"] }
+dotenvy = "0.15.7"
+governor = "0.10.4"
+jsonwebtoken = { version = "11.1.0", features = ["rust_crypto"] }
+migration = { path = "migration", version = "0.1.0" }
+reqwest = { version = "0.13.5", default-features = false, features = ["json", "rustls"] }
+sea-orm = { version = "2.0.4", features = [
+    "sqlx-postgres",
+    "runtime-tokio-rustls",
+    "macros",
+    "with-chrono",
+    "with-uuid",
+] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+thiserror = "2.0.21"
+tokio = { version = "1.54.1", features = ["full"] }
+tower-http = { version = "0.7.1", features = ["cors", "trace", "compression-gzip", "timeout", "fs"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter", "json"] }
+url = "2.5.8"
+utoipa = { version = "6.0.0", features = ["chrono", "uuid"] }
+utoipa-swagger-ui = { version = "10.0.2", features = ["axum", "vendored"] }
+uuid = { version = "1.29.1", features = ["v4", "serde"] }
+
+[dev-dependencies]
+http-body-util = "0.1.5"
+mockall = "0.15.0"
+sea-orm = { version = "2.0.4", features = ["mock"] }
+tower = "0.5.3"
+typos = "0.10.44"
+serde_urlencoded = "0.7"
+cargo-audit = "0.22"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+dbg_macro = "warn"
+todo = "warn"
+should_implement_trait = "allow"
+
+[profile.release]
+strip = "symbols"
+debug = false
+lto = true
+codegen-units = 1
+
+[profile.dev]
+debug = "line-tables-only"
+
+[profile.dev.package.argon2]
+opt-level = 3

@@ -1,0 +1,2 @@
+[files]
+extend-exclude = ["*.sql", "*.pem", "src/entities/", "Cargo.lock", ".env", ".env.example"]

@@ -1,0 +1,35 @@
+# Cargo Audit config file
+#
+# It may be located in the user home (`~/.cargo/audit.toml`) or in the project
+# root (`.cargo/audit.toml`).
+#
+# All of the options which can be passed via CLI arguments can also be
+# permanently specified in this file.
+
+[advisories]
+# advisory IDs to ignore e.g. ["RUSTSEC-2019-0001", ...]
+ignore = [
+    "RUSTSEC-2023-0071", # Crate: rsa
+    "RUSTSEC-2025-0141", # Crate: bincode (unmaintained transitive dependency)
+    "RUSTSEC-2024-0436", # Crate: paste (unmaintained transitive dependency)
+    "RUSTSEC-2026-0387",
+    "RUSTSEC-2026-0459", # libsqlite3-sys via sqlx's optional `sqlite` feature — unused (project is PostgreSQL-only)
+]
+informational_warnings = ["unmaintained"] # warn for categories of informational advisories
+severity_threshold = "low" # CVSS severity ("none", "low", "medium", "high", "critical")
+
+# Output Configuration
+[output]
+deny = ["unmaintained"] # exit on error if unmaintained dependencies are found
+format = "terminal" # "terminal" (human readable report) or "json"
+quiet = false # Only print information on error
+show_tree = true # Show inverse dependency trees along with advisories (default: true)
+
+# Target Configuration
+[target]
+arch = ["x86_64", "aarch64", "arm"] # Ignore advisories for CPU architectures other than these
+os = ["linux", "windows", "macos"] # Ignore advisories for operating systems other than these
+
+[yanked]
+enabled = false # Warn for yanked crates in Cargo.lock (default: true)
+update_index = true # Auto-update the crates.io index (default: true)

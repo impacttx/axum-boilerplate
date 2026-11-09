@@ -1,0 +1,99 @@
+# Configuration file for `prek`, a git hook framework written in Rust.
+# See https://prek.j178.dev for more information.
+#:schema https://www.schemastore.org/prek.json
+
+ci = { autofix_prs = false, autoupdate_schedule = "weekly" }
+
+[[repos]]
+repo = "builtin"
+
+[[repos.hooks]]
+id = "trailing-whitespace"
+exclude = '(\.sql$|\.md$)'
+
+[[repos.hooks]]
+id = "check-added-large-files"
+exclude = '(Cargo\.lock$|\.sql|\.ttf$)'
+
+[[repos.hooks]]
+id = "end-of-file-fixer"
+
+[[repos.hooks]]
+id = "check-merge-conflict"
+fail_fast = true
+
+[[repos.hooks]]
+id = "check-case-conflict"
+fail_fast = true
+
+[[repos.hooks]]
+id = "check-json"
+fail_fast = true
+
+[[repos.hooks]]
+id = "check-json5"
+fail_fast = true
+
+[[repos.hooks]]
+id = "check-yaml"
+fail_fast = true
+
+[[repos.hooks]]
+id = "check-toml"
+fail_fast = true
+
+[[repos.hooks]]
+id = "check-shebang-scripts-are-executable"
+fail_fast = true
+
+[[repos.hooks]]
+id = "detect-private-key"
+exclude = '^(tests/fixtures/|\.env\.example|compose\.yml$)'
+fail_fast = true
+
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "cargo-fmt"
+name = "cargo fmt"
+entry = "cargo fmt --all -- --check"
+language = "system"
+types = ["rust"]
+pass_filenames = false
+fail_fast = true
+
+[[repos.hooks]]
+id = "cargo-check"
+name = "cargo check"
+entry = "cargo check"
+language = "system"
+types = ["rust"]
+pass_filenames = false
+fail_fast = true
+
+[[repos.hooks]]
+id = "cargo-clippy"
+name = "cargo clippy (lint + type check)"
+entry = "cargo clippy --fix --allow-dirty --locked --workspace --all-targets"
+language = "system"
+types = ["rust"]
+pass_filenames = false
+fail_fast = true
+
+[[repos.hooks]]
+id = "cargo-deny"
+name = "cargo deny (advisories, licenses, sources)"
+entry = "cargo deny check"
+language = "system"
+files = '(Cargo\.(toml|lock)|deny\.toml)$'
+pass_filenames = false
+fail_fast = true
+
+[[repos.hooks]]
+id = "cargo-audit"
+name = "cargo audit"
+entry = "cargo audit"
+language = "system"
+types = ["rust"]
+pass_filenames = false
